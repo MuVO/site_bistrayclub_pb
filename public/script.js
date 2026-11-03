@@ -1,6 +1,6 @@
 const menuButton = document.querySelector('header button[aria-label="Toggle menu"]');
 if (menuButton) {
-  const panel = menuButton.closest('header')?.querySelector('div.md\\:overflow-hidden');
+  const panel = menuButton.closest('header')?.querySelector('div.overflow-hidden.transition-all');
   menuButton.addEventListener('click', () => {
     const expanded = menuButton.getAttribute('aria-expanded') === 'true';
     menuButton.setAttribute('aria-expanded', String(!expanded));
@@ -13,7 +13,7 @@ if (menuButton) {
   });
   document.querySelectorAll('header nav a').forEach((link) => link.addEventListener('click', () => {
     menuButton.setAttribute('aria-expanded', 'false');
-    const panel = menuButton.closest('header')?.querySelector('div.md\\:overflow-hidden');
+    const panel = menuButton.closest('header')?.querySelector('div.overflow-hidden.transition-all');
     panel?.classList.add('max-h-0', 'opacity-0');
     panel?.classList.remove('max-h-80', 'opacity-100');
   }));

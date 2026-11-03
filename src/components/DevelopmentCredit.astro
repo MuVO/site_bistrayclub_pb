@@ -1,0 +1,88 @@
+<div class="credit-row" id="development-credit">
+  <a
+    class="credit-badge"
+    href="http://letsmakeit.ru"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Разработка: Let's make IT — открыть сайт"
+  >
+    <img src="/assets/lmi-mark.svg" alt="" width="18" height="18" loading="lazy" />
+    <span class="credit-label">Разработка:</span>
+    <span class="credit-name">Let's make IT</span>
+  </a>
+</div>
+
+<style>
+  .credit-row {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    max-width: 80rem;
+    box-sizing: border-box;
+    padding: 0 2rem 1.25rem;
+    margin: 0 auto;
+  }
+
+  .credit-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid rgb(255 255 255 / 8%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 2%);
+    color: rgb(209 213 219 / 58%);
+    font-size: 0.6875rem;
+    letter-spacing: 0.015em;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
+  }
+
+  .credit-badge:hover {
+    border-color: rgb(183 255 0 / 42%);
+    background: rgb(183 255 0 / 7%);
+    box-shadow: 0 0 0 3px rgb(183 255 0 / 5%);
+    transform: translateY(-2px);
+  }
+
+  .credit-badge:hover .credit-name {
+    color: #d8ffa0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .credit-badge:active {
+    transform: translateY(0);
+  }
+
+  .credit-badge:focus-visible {
+    outline: 2px solid rgb(255 255 255 / 45%);
+    outline-offset: 3px;
+  }
+
+  .credit-badge img {
+    display: block;
+    width: 1.125rem;
+    height: 1.125rem;
+    object-fit: contain;
+    opacity: 0.82;
+  }
+
+  .credit-name {
+    color: rgb(229 231 235 / 82%);
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .credit-row {
+      padding-right: 1rem;
+      padding-left: 1rem;
+    }
+  }
+</style>
