@@ -1,4 +1,5 @@
 <div class="credit-row" id="development-credit">
+  <p class="copyright">© {new Date().getFullYear()} Пейнтбол Клуб Быстрай. Все права защищены.</p>
   <a
     class="credit-badge"
     href="http://letsmakeit.ru"
@@ -15,12 +16,22 @@
 <style>
   .credit-row {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     width: 100%;
     max-width: 80rem;
     box-sizing: border-box;
-    padding: 0 2rem 1.25rem;
+    padding: 2rem 2rem 1.25rem;
     margin: 0 auto;
+    border-top: 1px solid rgb(255 255 255 / 10%);
+  }
+
+  .copyright {
+    margin: 0;
+    color: rgb(107 114 128 / 100%);
+    font-size: 0.75rem;
+    line-height: 1.5;
   }
 
   .credit-badge {
@@ -79,10 +90,28 @@
     font-weight: 500;
   }
 
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .credit-row {
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
+    }
+  }
+
   @media (max-width: 640px) {
     .credit-row {
+      flex-wrap: wrap;
+      justify-content: flex-start;
       padding-right: 1rem;
       padding-left: 1rem;
+    }
+
+    .copyright {
+      flex-basis: 100%;
+      text-align: left;
+    }
+
+    .credit-badge {
+      margin-left: auto;
     }
   }
 </style>
