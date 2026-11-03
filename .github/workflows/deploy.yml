@@ -1,0 +1,82 @@
+name: Build and deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate public site settings
+        env:
+          SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
+          PHONE_NUMBER: ${{ vars.PHONE_NUMBER }}
+          CLUB_ADDRESS: ${{ vars.CLUB_ADDRESS }}
+          OPENING_HOURS: ${{ vars.OPENING_HOURS }}
+          PRICE_PER_PLAYER: ${{ vars.PRICE_PER_PLAYER }}
+          MIN_PLAYERS: ${{ vars.MIN_PLAYERS }}
+          INCLUDED_BALLS: ${{ vars.INCLUDED_BALLS }}
+        run: |
+          for setting in SITE_DOMAIN PHONE_NUMBER CLUB_ADDRESS OPENING_HOURS PRICE_PER_PLAYER MIN_PLAYERS INCLUDED_BALLS; do
+            if [[ -z "${!setting}" ]]; then
+              echo "Missing repository Actions variable: ${setting}" >&2
+              exit 1
+            fi
+          done
+          for setting in PRICE_PER_PLAYER MIN_PLAYERS INCLUDED_BALLS; do
+            if ! [[ "${!setting}" =~ ^[1-9][0-9]*$ ]]; then
+              echo "Actions variable ${setting} must be a positive integer." >&2
+              exit 1
+            fi
+          done
+          printf '%s\n' "$SITE_DOMAIN" > public/CNAME
+
+      - name: Build static site
+        env:
+          PUBLIC_SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
+          PUBLIC_CONTACT_FUNCTION_URL: ${{ vars.CONTACT_FUNCTION_URL }}
+          PUBLIC_PHONE_NUMBER: ${{ vars.PHONE_NUMBER }}
+          PUBLIC_CLUB_ADDRESS: ${{ vars.CLUB_ADDRESS }}
+          PUBLIC_OPENING_HOURS: ${{ vars.OPENING_HOURS }}
+          PUBLIC_PRICE_PER_PLAYER: ${{ vars.PRICE_PER_PLAYER }}
+          PUBLIC_MIN_PLAYERS: ${{ vars.MIN_PLAYERS }}
+          PUBLIC_INCLUDED_BALLS: ${{ vars.INCLUDED_BALLS }}
+        run: npm run build
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

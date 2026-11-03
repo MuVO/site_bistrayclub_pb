@@ -1,0 +1,21 @@
+---
+const { title = 'Пейнтбол Клуб Быстрай — Адреналин, Тактика, Победа', description = 'Пейнтбол в КСК «Быстрай». Советский ретро-полигон, реальные автомобили, вышки снайперов и захватывающие сценарии боя.' } = Astro.props;
+import '../styles/global.css';
+import { siteConfig } from '../lib/siteConfig';
+---
+<!doctype html>
+<html lang="ru" class="dark" data-contact-url={siteConfig.contactFunctionUrl}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#007bff" />
+    <meta name="referrer" content="no-referrer" />
+    {siteConfig.siteDomain && <link rel="canonical" href={`https://${siteConfig.siteDomain}/`} />}
+    <link rel="preload" as="image" href="/images/background.jpg" />
+    <link rel="preload" as="image" href="/images/hero.jpg" />
+    <title>{title}</title>
+    <slot name="head" />
+  </head>
+  <body class="font-body antialiased"><slot /><script src="/script.js" defer></script></body>
+</html>

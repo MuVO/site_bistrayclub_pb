@@ -1,0 +1,7 @@
+{
+  "name": "bistray-paintball-astro",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {"dev":"astro dev", "build":"astro build", "preview":"astro preview"},
+  "dependencies": {"@astrojs/sitemap":"^3.6.0", "astro":"^5.14.0"}
+}

@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HtmlFragment from '../components/HtmlFragment.astro';
+import background from '../content/background.html?raw';
+import header from '../content/header.html?raw';
+import hero from '../content/section-1.html?raw';
+import arena from '../content/section-2.html?raw';
+import scenarios from '../content/section-3.html?raw';
+import pricing from '../content/section-4.html?raw';
+import booking from '../content/section-5.html?raw';
+import footer from '../content/footer.html?raw';
+import { renderContent } from '../lib/siteConfig';
+---
+<BaseLayout>
+  <div class="relative min-h-screen overflow-x-hidden">
+    <HtmlFragment content={background} />
+    <HtmlFragment content={renderContent(header)} />
+    <main>
+      <HtmlFragment content={hero} />
+      <HtmlFragment content={arena} />
+      <HtmlFragment content={scenarios} />
+      <HtmlFragment content={renderContent(pricing)} />
+      <HtmlFragment content={renderContent(booking)} />
+    </main>
+    <HtmlFragment content={renderContent(footer)} />
+  </div>
+</BaseLayout>
