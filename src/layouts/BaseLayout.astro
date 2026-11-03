@@ -1,7 +1,85 @@
 ---
-const { title = 'Пейнтбол Клуб Быстрай — Адреналин, Тактика, Победа', description = 'Пейнтбол в КСК «Быстрай». Советский ретро-полигон, реальные автомобили, вышки снайперов и захватывающие сценарии боя.' } = Astro.props;
 import '../styles/global.css';
-import { siteConfig } from '../lib/siteConfig';
+import { getOpeningHoursSchema, siteConfig } from '../lib/siteConfig';
+
+const {
+  title = 'Пейнтбол в Челябинске — клуб «Быстрай» | Тактические игры',
+  description = 'Пейнтбол в Челябинске на полигоне КСК «Быстрай»: тактические сценарии, игры для компаний и корпоративов. Бронируйте игру онлайн. Уфимский тракт, 122/3.',
+  noindex = false,
+} = Astro.props;
+
+const isDevelopment = import.meta.env.DEV;
+const siteUrl = siteConfig.siteDomain
+  ? `https://${siteConfig.siteDomain}/`
+  : new URL('/', Astro.site ?? Astro.url).href;
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+const socialImage = new URL('/images/hero.jpg', siteUrl).href;
+const clubId = `${siteUrl}#club`;
+const websiteId = `${siteUrl}#website`;
+const openingHours = getOpeningHoursSchema(siteConfig.openingHours);
+const streetAddress = siteConfig.map.address.replace(/^г\.?\s*Челябинск\s*,\s*/i, '');
+const price = Number(siteConfig.pricePerPlayer);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      url: siteUrl,
+      name: 'Пейнтбол Клуб «Быстрай»',
+      inLanguage: 'ru-RU',
+    },
+    {
+      '@type': 'SportsActivityLocation',
+      '@id': clubId,
+      name: 'Пейнтбол Клуб «Быстрай»',
+      url: siteUrl,
+      description,
+      image: socialImage,
+      ...(siteConfig.phoneNumber && { telephone: siteConfig.phoneNumber }),
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress,
+        addressLocality: 'Челябинск',
+        addressRegion: 'Челябинская область',
+        addressCountry: 'RU',
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: siteConfig.map.latitude,
+        longitude: siteConfig.map.longitude,
+      },
+      ...(openingHours.length && { openingHours }),
+      hasMap: siteConfig.map.directionsUrl,
+      sameAs: [
+        'https://bistray.ru/uslugi/pejntbol/pejntbol',
+        'https://vk.com/ksk_bistray',
+      ],
+      ...(price > 0 && {
+        makesOffer: {
+          '@type': 'Offer',
+          priceCurrency: 'RUB',
+          price,
+          description: `Пейнтбол на одного участника, включено ${siteConfig.includedBalls} шаров.`,
+          itemOffered: { '@type': 'Service', name: 'Игра в пейнтбол' },
+        },
+      }),
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${siteUrl}#webpage`,
+      url: pageUrl,
+      name: title,
+      description,
+      inLanguage: 'ru-RU',
+      isPartOf: { '@id': websiteId },
+      mainEntity: { '@id': clubId },
+    },
+  ],
+};
+
+const jsonLd = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang="ru" class="dark" data-contact-url={siteConfig.contactFunctionUrl}>
@@ -9,13 +87,29 @@ import { siteConfig } from '../lib/siteConfig';
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#007bff" />
-    <meta name="referrer" content="no-referrer" />
-    {siteConfig.siteDomain && <link rel="canonical" href={`https://${siteConfig.siteDomain}/`} />}
+    <meta name="theme-color" content="#090d0b" />
+    <meta name="robots" content={isDevelopment || noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Пейнтбол Клуб «Быстрай»" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content="Пейнтбол на полигоне клуба «Быстрай» в Челябинске" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1344" />
+    <meta property="og:image:height" content="768" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    {!isDevelopment && !noindex && <link rel="canonical" href={pageUrl} />}
     <link rel="preload" as="image" href="/images/background.jpg" />
     <link rel="preload" as="image" href="/images/hero.jpg" />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={jsonLd} />
     <slot name="head" />
   </head>
-  <body class="font-body antialiased"><slot /><script src="/script.js" defer></script></body>
+  <body class="font-body antialiased"><a class="skip-link" href="#main-content">Перейти к содержанию</a><slot /><script src="/script.js" defer></script></body>
 </html>

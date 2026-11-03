@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Страница не найдена — Пейнтбол Клуб Быстрай">
-  <main class="min-h-screen flex flex-col items-center justify-center px-6 text-center text-white">
+<BaseLayout title="Страница не найдена — Пейнтбол Клуб Быстрай" noindex={true}>
+  <main id="main-content" class="min-h-screen flex flex-col items-center justify-center px-6 text-center text-white">
     <p class="font-heading text-7xl font-bold text-neon-green">404</p>
     <h1 class="mt-4 text-2xl font-bold">Такой страницы нет</h1>
     <a class="mt-6 text-neon-cyan underline" href="/">Вернуться на главную</a>

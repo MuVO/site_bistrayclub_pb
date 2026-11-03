@@ -1,9 +1,10 @@
-const menuButton = document.querySelector('header button[aria-label="Toggle menu"]');
+const menuButton = document.querySelector('header button[aria-controls="mobile-navigation"]');
 if (menuButton) {
   const panel = menuButton.closest('header')?.querySelector('div.overflow-hidden.transition-all');
   menuButton.addEventListener('click', () => {
     const expanded = menuButton.getAttribute('aria-expanded') === 'true';
     menuButton.setAttribute('aria-expanded', String(!expanded));
+    menuButton.setAttribute('aria-label', expanded ? 'Открыть меню' : 'Закрыть меню');
     if (panel) {
       panel.classList.toggle('max-h-0', expanded);
       panel.classList.toggle('opacity-0', expanded);
@@ -13,10 +14,32 @@ if (menuButton) {
   });
   document.querySelectorAll('header nav a').forEach((link) => link.addEventListener('click', () => {
     menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Открыть меню');
     const panel = menuButton.closest('header')?.querySelector('div.overflow-hidden.transition-all');
     panel?.classList.add('max-h-0', 'opacity-0');
     panel?.classList.remove('max-h-80', 'opacity-100');
   }));
+}
+
+const mapModal = document.querySelector('#club-map-modal');
+if (mapModal) {
+  const mapFrame = mapModal.querySelector('iframe');
+  const closeMap = () => {
+    mapModal.classList.remove('is-open');
+    mapModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('club-map-locked');
+    if (mapFrame) mapFrame.removeAttribute('src');
+  };
+  document.querySelectorAll('.club-map-preview').forEach((preview) => preview.addEventListener('click', () => {
+    mapModal.classList.add('is-open');
+    mapModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('club-map-locked');
+    if (mapFrame && !mapFrame.hasAttribute('src')) mapFrame.src = mapFrame.dataset.src;
+    mapModal.querySelector('.club-map-close')?.focus();
+  }));
+  mapModal.querySelector('.club-map-close')?.addEventListener('click', closeMap);
+  mapModal.addEventListener('click', (event) => { if (event.target === mapModal) closeMap(); });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && mapModal.classList.contains('is-open')) closeMap(); });
 }
 
 const form = document.querySelector('#booking form');

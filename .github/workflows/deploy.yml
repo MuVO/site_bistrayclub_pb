@@ -67,6 +67,14 @@ jobs:
           PUBLIC_PRICE_PER_PLAYER: ${{ vars.PRICE_PER_PLAYER }}
           PUBLIC_MIN_PLAYERS: ${{ vars.MIN_PLAYERS }}
           PUBLIC_INCLUDED_BALLS: ${{ vars.INCLUDED_BALLS }}
+          PUBLIC_MAP_ADDRESS: ${{ vars.MAP_ADDRESS }}
+          PUBLIC_MAP_LATITUDE: ${{ vars.MAP_LATITUDE }}
+          PUBLIC_MAP_LONGITUDE: ${{ vars.MAP_LONGITUDE }}
+          PUBLIC_MAP_ZOOM: ${{ vars.MAP_ZOOM }}
+          PUBLIC_MAP_LAYER: ${{ vars.MAP_LAYER }}
+          PUBLIC_MAP_PREVIEW_WIDTH: ${{ vars.MAP_PREVIEW_WIDTH }}
+          PUBLIC_MAP_PREVIEW_HEIGHT: ${{ vars.MAP_PREVIEW_HEIGHT }}
+          PUBLIC_MAP_MARKER_COLOR: ${{ vars.MAP_MARKER_COLOR }}
         run: npm run build
 
       - name: Configure GitHub Pages

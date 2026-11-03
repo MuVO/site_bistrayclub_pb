@@ -2,3 +2,27 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: #090d0b; }
 :focus-visible { outline: 2px solid #b7ff00; outline-offset: 3px; }
+.club-map-preview { width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; aspect-ratio: 1.12; cursor: pointer; isolation: isolate; }
+footer .club-map-preview { height: 10rem; aspect-ratio: auto; }
+.club-map-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.club-map-preview:hover .club-map-image { transform: scale(1.045); }
+.club-map-wash { position: absolute; inset: 0; background: linear-gradient(180deg,rgba(7,14,12,.04) 25%,rgba(7,14,12,.82) 100%); }
+.club-map-marker { position: absolute; left: 49%; top: 49.5%; width: 54px; height: 62px; filter: drop-shadow(0 5px 10px #0009); transform: translate(-50%,-100%) rotate(-8deg); }
+.club-map-marker svg { width: 100%; height: 100%; overflow: visible; }
+.club-map-marker path { fill: var(--club-map-marker-color, #b7ff00); stroke: #13220b; stroke-width: 2; }
+.club-map-marker circle { fill: #13220b; }
+.club-map-label { position: absolute; left: 1.25rem; right: 1.25rem; bottom: 2.5rem; display: grid; gap: .3rem; color: #e5e7eb; font-size: .8rem; }
+.club-map-label-title { color: white; font-size: 1.2rem; font-weight: 800; }
+.club-map-hint { position: absolute; bottom: 1.2rem; left: 1.25rem; right: 1.25rem; display: flex; justify-content: space-between; color: #b7ff00; font-size: .75rem; font-weight: 600; }
+.club-map-modal { position: fixed; z-index: 100; inset: 0; display: none; align-items: center; justify-content: center; padding: 1rem; background: #000c; backdrop-filter: blur(8px); }
+.club-map-modal.is-open { display: flex; }
+.club-map-dialog { width: min(100%, 1000px); overflow: hidden; border: 1px solid #ffffff26; border-radius: 1.25rem; background: #101713; box-shadow: 0 25px 80px #0009; }
+.club-map-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; color: white; }
+.club-map-dialog-header h2 { margin: 0; font-size: 1.125rem; font-weight: 800; }
+.club-map-dialog-header p { margin: .25rem 0 0; color: #aeb7b1; font-size: .875rem; }
+.club-map-close { width: 2.5rem; height: 2.5rem; border: 1px solid #ffffff26; border-radius: 50%; background: #ffffff0d; color: white; font-size: 1.75rem; line-height: 1; cursor: pointer; }
+.club-map-dialog iframe { display: block; width: 100%; height: min(68vh, 620px); border: 0; }
+body.club-map-locked { overflow: hidden; }
+.skip-link { position: fixed; z-index: 200; top: .75rem; left: .75rem; padding: .75rem 1rem; transform: translateY(-150%); border-radius: .5rem; background: #b7ff00; color: #090d0b; font-weight: 700; }
+.skip-link:focus { transform: translateY(0); }
+@media (max-width: 480px) { .club-map-dialog iframe { height: 70vh; } .club-map-dialog-header { padding: .85rem 1rem; } }
